@@ -12,7 +12,7 @@ I mixed some code from internet to provide a simple and reusable git webhook scr
 
 
 ## How to ?
-- add a `SECRET_TOKEN` to your env var on your server
+- rename and modify WEBHOOK_KEY in the file .htaccess.example
 - add the same on the github repository settings > webhook
 - upload the content
 - example with github: you can set a url like that (in settings > webhooks): `https://githook.yourdomain.com/deployer.php?name=myrepository`

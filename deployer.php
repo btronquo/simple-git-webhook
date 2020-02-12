@@ -22,7 +22,7 @@
 define("LOGFILE", "deploy.log");
 define("GIT", "/usr/bin/git");
 define("MAX_EXECUTION_TIME", 180);
-define("TOKEN", $_ENV["SECRET_TOKEN"]);
+define("TOKEN", getenv('REDIRECT_WEBHOOK_KEY'));
 
 $content   = file_get_contents("php://input");
 $json      = json_decode($content, true);

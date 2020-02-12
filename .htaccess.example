@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+SetEnv WEBHOOK_KEY secret
