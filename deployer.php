@@ -98,7 +98,9 @@ if (!empty(TOKEN) && isset($_SERVER["HTTP_X_HUB_SIGNATURE"]) && $token !== hash_
     if ($json["ref"] === "refs/heads/develop") {
 
         fputs($file, $content . PHP_EOL);
+        echo 'path develop: ' . $pathPreproduction;
         chdir($pathPreproduction);
+
         fputs($file, "*** WEBHOOK - (DEVELOP) INIT FOR: " . $pathPreproduction . "\n");
         exec(GIT . " pull 2>&1", $output, $exit);
 
@@ -117,6 +119,7 @@ if (!empty(TOKEN) && isset($_SERVER["HTTP_X_HUB_SIGNATURE"]) && $token !== hash_
     } elseif ($json["ref"] === "refs/heads/master") {
 
         fputs($file, $content . PHP_EOL);
+        echo 'path develop: ' . $pathPreproduction;
         chdir($pathProduction);
 
         fputs($file, "*** WEBHOOK - (MASTER) INIT FOR: " . $pathProduction . "\n");
