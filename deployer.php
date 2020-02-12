@@ -22,13 +22,12 @@
 define("LOGFILE", "deploy.log");
 define("GIT", "/usr/bin/git");
 define("MAX_EXECUTION_TIME", 180);
-define("TOKEN", getenv('REDIRECT_WEBHOOK_KEY'));
 
 $content   = file_get_contents("php://input");
 $json      = json_decode($content, true);
 $file      = fopen(LOGFILE, "a");
 $time      = time();
-$token     = false;
+$token     = getenv('REDIRECT_WEBHOOK_KEY');
 $sha       = false;
 $repoName  = htmlspecialchars($_GET["name"]);
 
@@ -73,19 +72,19 @@ function forbid($file, $reason) {
     exit;
 }
 // Check for a GitHub signature
-if (!empty(TOKEN) && isset($_SERVER["HTTP_X_HUB_SIGNATURE"]) && $token !== hash_hmac($algo, $content, TOKEN)) {
+if (!empty($token) && isset($_SERVER["HTTP_X_HUB_SIGNATURE"]) && $token !== hash_hmac($algo, $content, $token)) {
     forbid($file, "X-Hub-Signature does not match TOKEN");
 
 // Check for a GitLab token
-} elseif (!empty(TOKEN) && isset($_SERVER["HTTP_X_GITLAB_TOKEN"]) && $token !== TOKEN) {
+} elseif (!empty($token) && isset($_SERVER["HTTP_X_GITLAB_TOKEN"]) && $token !== $token) {
     forbid($file, "X-GitLab-Token does not match TOKEN");
 
 // Check for a $_GET token
-} elseif (!empty(TOKEN) && isset($_GET["token"]) && $token !== TOKEN) {
+} elseif (!empty($token) && isset($_GET["token"]) && $token !== $token) {
     forbid($file, "\$_GET[\"token\"] does not match TOKEN");
 
 // if none of the above match, but a token exists, exit
-} elseif (!empty(TOKEN) && !isset($_SERVER["HTTP_X_HUB_SIGNATURE"]) && !isset($_SERVER["HTTP_X_GITLAB_TOKEN"]) && !isset($_GET["token"])) {
+} elseif (!empty($token) && !isset($_SERVER["HTTP_X_HUB_SIGNATURE"]) && !isset($_SERVER["HTTP_X_GITLAB_TOKEN"]) && !isset($_GET["token"])) {
     forbid($file, "No token detected");
 
 } elseif (!$token){
