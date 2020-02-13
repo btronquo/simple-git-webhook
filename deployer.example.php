@@ -50,6 +50,12 @@ $token     = false;
 $sha       = false;
 $repoName  = htmlspecialchars($_GET["name"]);
 
+// Check if the file deploy.log exist and create if it's needed.
+if(!is_file(LOGFILE)){
+    $contents = '** File created **';
+    file_put_contents(LOGFILE, $contents);
+}
+
 /**
  * enter the root path of your web server example: $rootPath = "/home/client/something" or "/"
  * you can use the command `cd && pwd` on your server to know the root path
